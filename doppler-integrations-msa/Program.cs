@@ -94,7 +94,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/user/integrations", async Task<Results<Ok<IList<ThirdPartyAppXUser>>, NoContent>> (
+app.MapGet("/user/connections", async Task<Results<Ok<IList<ThirdPartyAppXUser>>, NoContent>> (
     ClaimsPrincipal user, IThirdPartyAppService thirdPartyAppService) =>
 {
     var idUser = SecurityUtils.GetAuthenticatedUserId(user);
@@ -105,7 +105,7 @@ app.MapGet("/user/integrations", async Task<Results<Ok<IList<ThirdPartyAppXUser>
         TypedResults.Ok(response)
         : TypedResults.NoContent();
 })
-.WithName("UserIntegrations")
+.WithName("UserConnections")
 .WithOpenApi()
 .RequireAuthorization(Policies.Default);
 
