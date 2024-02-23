@@ -9,7 +9,7 @@ namespace DopplerIntegrationsData
         private const string SP_GET_THIRD_PARTY_APP_X_USER = "GetIntegrationsByUser";
 
         public ThirdPartyAppXUserRepository(
-           IOptions<DopplerDataBaseSettings> dopplerDataBaseSettings)
+            IOptions<DopplerDataBaseSettings> dopplerDataBaseSettings)
         {
             SQLHelper.CONN_STRING = dopplerDataBaseSettings.Value.GetSqlConnectionString();
         }

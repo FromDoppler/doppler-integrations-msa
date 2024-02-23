@@ -1,4 +1,4 @@
-namespace dopplerIntegrationsDomain
+namespace DopplerIntegrationsDomain
 {
     public class Subscriber
     {
