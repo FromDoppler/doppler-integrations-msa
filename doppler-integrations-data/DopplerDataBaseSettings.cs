@@ -6,9 +6,11 @@ namespace DopplerIntegrationsData
 {
     public class DopplerDataBaseSettings
     {
-        public const string DopplerDataBase = "DopplerDataBase";
+        public const string DopplerDataBase = "DopplerDataBaseSettings";
 
         public string ConnectionString { get; set; }
+
+        public string Password { get; set; }
 
         public string GetSqlConnectionString()
         {
@@ -20,6 +22,10 @@ namespace DopplerIntegrationsData
             {
                 ApplicationName = Assembly.GetEntryAssembly().GetName().Name,
             };
+            if (!string.IsNullOrWhiteSpace(Password))
+            {
+                builder.Password = Password;
+            }
             return builder.ConnectionString;
         }
     }
