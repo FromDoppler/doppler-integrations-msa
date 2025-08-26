@@ -127,6 +127,25 @@ app.MapGet("/user/assisted-shopping/{idThirdPartyApp}/{dateFrom}/{dateTo}", asyn
 .WithOpenApi()
 .RequireAuthorization(Policies.Default);
 
+app.MapGet("/integration/shopify/status",
+    async (ClaimsPrincipal user, IThirdPartyAppService thirdPartyAppService) =>
+    {
+        var idUser = SecurityUtils.GetAuthenticatedUserId(user);
+
+        var thirdPartyAppXUser = await thirdPartyAppService.GetThirdPartyAppXUser(
+            7, idUser);
+
+        var response = new
+        {
+            success = true,
+            rfm = thirdPartyAppService.GetRfmModel(thirdPartyAppXUser)
+        };
+
+        return TypedResults.Ok(response);
+    })
+.WithName("GetShopifyIntegrationStatus")
+.WithOpenApi()
+.RequireAuthorization(Policies.Default);
 
 app.Run();
 
