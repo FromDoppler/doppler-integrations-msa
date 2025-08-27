@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using DopplerIntegrationsCore;
@@ -7,7 +5,6 @@ using DopplerIntegrationsData;
 using DopplerIntegrationsDomain;
 using DopplerIntegrationsMsa.DopplerSecurity;
 using DopplerIntegrationsMsa.Logging;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -127,25 +124,32 @@ app.MapGet("/user/assisted-shopping/{idThirdPartyApp}/{dateFrom}/{dateTo}", asyn
 .WithOpenApi()
 .RequireAuthorization(Policies.Default);
 
-app.MapGet("/integration/shopify/status",
-    async (ClaimsPrincipal user, IThirdPartyAppService thirdPartyAppService) =>
+app.MapGet("/integration/{idThirdPartyApp:int}/status",
+    async Task<Results<Ok<RfmModel>, NotFound, NoContent>> (
+        int idThirdPartyApp,
+        ClaimsPrincipal user,
+        IThirdPartyAppService thirdPartyAppService) =>
     {
         var idUser = SecurityUtils.GetAuthenticatedUserId(user);
 
-        var thirdPartyAppXUser = await thirdPartyAppService.GetThirdPartyAppXUser(
-            7, idUser);
+        var thirdPartyAppXUser = await thirdPartyAppService
+            .GetThirdPartyAppXUser(idUser, idThirdPartyApp);
 
-        var response = new
+        if (thirdPartyAppXUser is null)
         {
-            success = true,
-            rfm = thirdPartyAppService.GetRfmModel(thirdPartyAppXUser)
-        };
+            return TypedResults.NotFound();
+        }
 
-        return TypedResults.Ok(response);
+        var rfmModel = await thirdPartyAppService
+            .GetRfmModel(thirdPartyAppXUser);
+
+        return rfmModel is null
+            ? TypedResults.NoContent()
+            : TypedResults.Ok(rfmModel);
     })
-.WithName("GetShopifyIntegrationStatus")
-.WithOpenApi()
-.RequireAuthorization(Policies.Default);
+    .WithName("GetIntegrationStatus")
+    .WithOpenApi()
+    .RequireAuthorization(Policies.Default);
 
 app.Run();
 
