@@ -1,3 +1,4 @@
+using System.Data;
 using System.Data.SqlClient;
 using DopplerIntegrationsData.Helpers;
 using DopplerIntegrationsDomain;
@@ -69,9 +70,9 @@ namespace DopplerIntegrationsData
             return Task.FromResult(list);
         }
 
-        public Task<ThirdPartyAppXUser> GetThirdPartyAppXUser(int idUser, int idThirdPartyApp)
+        public Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(int idUser, int idThirdPartyApp)
         {
-            ThirdPartyAppXUser result = null;
+            ThirdPartyAppXUser? result = null;
 
             var query = @"
                 SELECT TOP 1
@@ -99,6 +100,7 @@ namespace DopplerIntegrationsData
 
             using (var reader = SQLHelper.ExecuteReader(
                 SQLHelper.CONN_STRING,
+                CommandType.Text,
                 query,
                 new SqlParameter("@idUser", idUser),
                 new SqlParameter("@idThirdPartyApp", idThirdPartyApp)))
@@ -135,9 +137,9 @@ namespace DopplerIntegrationsData
             return Task.FromResult(result);
         }
 
-        public Task<ThirdPartyApp> GetThirdPartyAppById(int idThirdPartyApp)
+        public Task<ThirdPartyApp?> GetThirdPartyAppById(int idThirdPartyApp)
         {
-            ThirdPartyApp app = null;
+            ThirdPartyApp? app = null;
 
             var query = @"
                 SELECT TOP 1
@@ -160,6 +162,7 @@ namespace DopplerIntegrationsData
 
             using (var reader = SQLHelper.ExecuteReader(
                 SQLHelper.CONN_STRING,
+                CommandType.Text,
                 query,
                 new SqlParameter("@idThirdPartyApp", idThirdPartyApp)))
             {
