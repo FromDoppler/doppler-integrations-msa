@@ -20,7 +20,7 @@ namespace DopplerIntegrationsCore
             return await _repository.GetListThirdPartyAppByUser(idUser);
         }
 
-        public async Task<ThirdPartyAppXUser> GetThirdPartyAppXUser(int idThirdPartyApp, int idUser)
+        public async Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(int idUser, int idThirdPartyApp)
         {
             var appXUser = await _repository.GetThirdPartyAppXUser(idUser, idThirdPartyApp);
             if (appXUser != null)
@@ -38,19 +38,22 @@ namespace DopplerIntegrationsCore
             return appXUser;
         }
 
-        public async Task<RfmModel> GetRfmModel(ThirdPartyAppXUser dto)
+        public async Task<RfmModel?> GetRfmModel(ThirdPartyAppXUser thirdPartyAppXUser)
         {
-            if (dto != null)
+            if (thirdPartyAppXUser != null)
             {
-                var thirdPartyApp = await _repository.GetThirdPartyAppById(dto.IdThirdPartyApp);
+                var thirdPartyApp = await _repository.GetThirdPartyAppById(thirdPartyAppXUser.IdThirdPartyApp);
 
-                return new RfmModel()
+                if (thirdPartyApp is not null)
                 {
-                    Visible = thirdPartyApp.RFMEnabled,
-                    Active = dto.RFMActive,
-                    Period = dto.RFMPeriod.ToString(CultureInfo.InvariantCulture),
-                    Date = Utils.FormatDateTimeAsString(dto.UTCLastRFMCalc) ?? string.Empty
-                };
+                    return new RfmModel()
+                    {
+                        Visible = thirdPartyApp.RFMEnabled,
+                        Active = thirdPartyAppXUser.RFMActive,
+                        Period = thirdPartyAppXUser.RFMPeriod.ToString(CultureInfo.InvariantCulture),
+                        Date = thirdPartyAppXUser.UTCLastRFMCalc.HasValue ? Utils.FormatDateTimeAsString(thirdPartyAppXUser.UTCLastRFMCalc) : string.Empty
+                    };
+                }
             }
 
             return null;
