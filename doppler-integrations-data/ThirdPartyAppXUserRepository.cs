@@ -156,7 +156,11 @@ namespace DopplerIntegrationsData
                     [ConfirmationOrderEnabled],
                     [RFMEnabled],
                     [PromotionCodeEnabled],
-                    [AssistedShoppingEnabled]
+                    [AssistedShoppingEnabled],
+                    [PopularProductsEnabled],
+                    [ProductHistoryEnabled],
+                    [DynamicProductEnabled],
+                    [ExitPopUpEnabled]
                 FROM [Doppler2011].[dbo].[ThirdPartyApp]
                 WHERE IdThirdPartyApp = @idThirdPartyApp";
 
