@@ -1,4 +1,3 @@
-using System.Globalization;
 using DopplerIntegrationsData;
 using DopplerIntegrationsDomain;
 
@@ -26,6 +25,7 @@ namespace DopplerIntegrationsCore
         public async Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(User user, int idThirdPartyApp)
         {
             var appXUser = await _repository.GetThirdPartyAppXUser(user.IdUser, idThirdPartyApp);
+
             if (appXUser != null && user.IdUserTimeZone.HasValue)
             {
                 var offset = 0;
@@ -35,7 +35,7 @@ namespace DopplerIntegrationsCore
                     offset = userTimeZone.Offset;
                 }
 
-                appXUser.UTCLastUpdate = appXUser.UTCLastUpdate.AddMinutes(offset);
+                appXUser.UTCLastUpdate = appXUser.UTCLastUpdate.HasValue ? (DateTime?)appXUser.UTCLastUpdate.Value.AddMinutes(offset) : null;
             }
 
             return appXUser;

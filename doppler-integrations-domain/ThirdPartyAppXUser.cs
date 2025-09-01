@@ -14,7 +14,7 @@ namespace DopplerIntegrationsDomain
 
         public string AccountName { get; set; }
 
-        public DateTime UTCLastUpdate { get; set; }
+        public DateTime? UTCLastUpdate { get; set; }
 
         public bool SendNotificationEmail { get; set; }
 
