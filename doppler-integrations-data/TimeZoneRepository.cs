@@ -16,7 +16,7 @@ namespace DopplerIntegrationsData
                     [IdUserTimeZone],
                     [Name],
                     [Offset],
-                    [ZoneName],
+                    [ZoneName]
                 FROM [Doppler2011].[dbo].[UserTimeZone]
                 WHERE IdUserTimeZone = @idUserTimeZone";
 

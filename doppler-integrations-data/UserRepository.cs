@@ -1,6 +1,6 @@
-using DopplerIntegrationsData.Helpers;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
+using DopplerIntegrationsData.Helpers;
 using DopplerIntegrationsDomain;
 
 namespace DopplerIntegrationsData
@@ -15,8 +15,7 @@ namespace DopplerIntegrationsData
                 SELECT TOP 1
                     [IdUser],
                     [IdUserTimeZone],
-                    [IdLanguage],
-                    [ZoneName],
+                    [IdLanguage]
                 FROM [Doppler2011].[dbo].[User]
                 WHERE IdUser = @idUser";
 
@@ -31,11 +30,7 @@ namespace DopplerIntegrationsData
                 {
                     IdUser = NullTreatment.GetInt(reader.GetSqlValue(0)),
                     IdUserTimeZone = NullTreatment.GetInt(reader.GetSqlValue(1)),
-                    IdLanguage = NullTreatment.GetInt(reader.GetSqlValue(2)),
-                    IdIndustry = NullTreatment.GetInt(reader.GetSqlValue(3)),
-                    FirstName = NullTreatment.GetString(reader.GetSqlValue(3)),
-                    LastName = NullTreatment.GetString(reader.GetSqlValue(3)),
-                    Email = NullTreatment.GetString(reader.GetSqlValue(3)),
+                    IdLanguage = NullTreatment.GetInt(reader.GetSqlValue(2))
                 };
             }
 
