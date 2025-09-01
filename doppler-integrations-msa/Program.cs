@@ -128,12 +128,14 @@ app.MapGet("/integration/{idThirdPartyApp:int}/status",
     async Task<Results<Ok<RfmModel>, NotFound, NoContent>> (
         int idThirdPartyApp,
         ClaimsPrincipal user,
+        IUserService userService,
         IThirdPartyAppService thirdPartyAppService) =>
     {
         var idUser = SecurityUtils.GetAuthenticatedUserId(user);
+        var userDb = userService.GetUserById(idUser);
 
         var thirdPartyAppXUser = await thirdPartyAppService
-            .GetThirdPartyAppXUser(idUser, idThirdPartyApp);
+            .GetThirdPartyAppXUser(userDb, idThirdPartyApp);
 
         if (thirdPartyAppXUser is null)
         {
@@ -141,7 +143,7 @@ app.MapGet("/integration/{idThirdPartyApp:int}/status",
         }
 
         var rfmModel = await thirdPartyAppService
-            .GetRfmModel(thirdPartyAppXUser);
+            .GetRfmModel(userDb, thirdPartyAppXUser);
 
         return rfmModel is null
             ? TypedResults.NoContent()

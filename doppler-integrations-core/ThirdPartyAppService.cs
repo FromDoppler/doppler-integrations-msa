@@ -7,12 +7,15 @@ namespace DopplerIntegrationsCore
     public class ThirdPartyAppService : IThirdPartyAppService
     {
         private readonly IThirdPartyAppXUserRepository _repository;
+        private readonly ITimeZoneRepository _timeZoneRepository;
 
         public ThirdPartyAppService(
-            IThirdPartyAppXUserRepository repository
+            IThirdPartyAppXUserRepository repository,
+            ITimeZoneRepository timeZoneRepository
         )
         {
             _repository = repository;
+            _timeZoneRepository = timeZoneRepository;
         }
 
         public async Task<IList<ThirdPartyAppXUser>> GetListThirdPartyAppByUser(int idUser)
@@ -20,29 +23,35 @@ namespace DopplerIntegrationsCore
             return await _repository.GetListThirdPartyAppByUser(idUser);
         }
 
-        public async Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(int idUser, int idThirdPartyApp)
+        public async Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(User user, int idThirdPartyApp)
         {
-            var appXUser = await _repository.GetThirdPartyAppXUser(idUser, idThirdPartyApp);
-            if (appXUser != null)
+            var appXUser = await _repository.GetThirdPartyAppXUser(user.IdUser, idThirdPartyApp);
+            if (appXUser != null && user.IdUserTimeZone.HasValue)
             {
-                //int offset = 0;
-                //UserTimeZone timeZone = _timeZoneRepository.GetByUserId(idUser);
-                //if (timeZone != null)
-                //{
-                //    offset = timeZone.Offset;
-                //}
+                var offset = 0;
+                var userTimeZone = _timeZoneRepository.GetByIdUserTimeZone(user.IdUserTimeZone.Value);
+                if (userTimeZone != null)
+                {
+                    offset = userTimeZone.Offset;
+                }
 
-                //appXUser.UTCLastUpdate = appXUser.UTCLastUpdate.AddMinutes(offset);
+                appXUser.UTCLastUpdate = appXUser.UTCLastUpdate.AddMinutes(offset);
             }
 
             return appXUser;
         }
 
-        public async Task<RfmModel?> GetRfmModel(ThirdPartyAppXUser thirdPartyAppXUser)
+        public async Task<RfmModel?> GetRfmModel(User user, ThirdPartyAppXUser thirdPartyAppXUser)
         {
             if (thirdPartyAppXUser != null)
             {
                 var thirdPartyApp = await _repository.GetThirdPartyAppById(thirdPartyAppXUser.IdThirdPartyApp);
+                var currentLanguage = string.Empty;
+
+                if (user.IdLanguage.HasValue)
+                {
+                    currentLanguage = Utils.GetCurrentLanguage(user.IdLanguage.Value);
+                }
 
                 if (thirdPartyApp is not null)
                 {
@@ -50,8 +59,8 @@ namespace DopplerIntegrationsCore
                     {
                         Visible = thirdPartyApp.RFMEnabled,
                         Active = thirdPartyAppXUser.RFMActive,
-                        Period = thirdPartyAppXUser.RFMPeriod.ToString(CultureInfo.InvariantCulture),
-                        Date = thirdPartyAppXUser.UTCLastRFMCalc.HasValue ? Utils.FormatDateTimeAsString(thirdPartyAppXUser.UTCLastRFMCalc) : string.Empty
+                        Period = $"{thirdPartyAppXUser.RFMPeriod ?? Constants.RFM_DEFAULT_PERIOD}",
+                        Date = thirdPartyAppXUser.UTCLastRFMCalc.HasValue ? Utils.FormatDateTimeAsString(thirdPartyAppXUser.UTCLastRFMCalc, currentLanguage) : string.Empty
                     };
                 }
             }

@@ -30,7 +30,7 @@ namespace DopplerIntegrationsDomain
 
         public bool RFMActive { get; set; }
 
-        public int RFMPeriod { get; set; }
+        public int? RFMPeriod { get; set; }
 
         public DateTime? UTCLastRFMCalc { get; set; }
 

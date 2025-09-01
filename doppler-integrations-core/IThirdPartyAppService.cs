@@ -6,8 +6,8 @@ namespace DopplerIntegrationsCore
     {
         Task<IList<ThirdPartyAppXUser>> GetListThirdPartyAppByUser(int idUser);
 
-        Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(int idUser, int idThirdPartyApp);
+        Task<ThirdPartyAppXUser?> GetThirdPartyAppXUser(User user, int idThirdPartyApp);
 
-        Task<RfmModel?> GetRfmModel(ThirdPartyAppXUser thirdPartyAppXUser);
+        Task<RfmModel?> GetRfmModel(User user, ThirdPartyAppXUser thirdPartyAppXUser);
     }
 }
