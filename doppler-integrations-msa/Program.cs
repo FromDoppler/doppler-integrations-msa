@@ -54,6 +54,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDopplerSecurity();
 
 builder.Services.AddSingleton<IThirdPartyAppService, ThirdPartyAppService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<ITimeZoneRepository, TimeZoneRepository>();
 builder.Services.AddSingleton<IThirdPartyAppXUserRepository, ThirdPartyAppXUserRepository>();
 builder.Services.AddSingleton<IAssistedShoppingService, AssistedShoppingService>();
 builder.Services.AddSingleton<IAssistedShoppingRepository, AssistedShoppingRepository>();
