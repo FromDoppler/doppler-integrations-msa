@@ -6,6 +6,8 @@ charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
 end_of_line = lf
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1305.severity = none
 
 [*.{xml,config,*proj,nuspec,props,resx,targets,yml,tasks}]
 indent_size = 2
