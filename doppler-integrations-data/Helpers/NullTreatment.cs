@@ -1,4 +1,3 @@
-using System;
 using System.Data.SqlTypes;
 using System.Globalization;
 
@@ -72,6 +71,15 @@ namespace DopplerIntegrationsData.Helpers
             return DateTime.TryParse(possibleDateTime.ToString(), CultureInfo.InvariantCulture, out var val)
                 ? val
                 : DateTime.MinValue;
+        }
+
+        public static DateTime? GetNullableDateTime(object possibleDateTime)
+        {
+            return possibleDateTime == null || possibleDateTime == DBNull.Value
+                ? null
+                : DateTime.TryParse(possibleDateTime.ToString(), CultureInfo.InvariantCulture, out var val)
+                ? val
+                : (DateTime?)null;
         }
 
         public static byte GetByte(object possibleByte)
