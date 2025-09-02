@@ -60,7 +60,11 @@ namespace DopplerIntegrationsData
                             ConfirmationOrderEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(28)),
                             RFMEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(29)),
                             PromotionCodeEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(30)),
-                            AssistedShoppingEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(31))
+                            AssistedShoppingEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(31)),
+                            PopularProductsEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(32)),
+                            ProductHistoryEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(33)),
+                            DynamicProductEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(34)),
+                            ExitPopUpEnabled = NullTreatment.GetBoolean(reader.GetSqlValue(35))
                         }
                     });
                 }
