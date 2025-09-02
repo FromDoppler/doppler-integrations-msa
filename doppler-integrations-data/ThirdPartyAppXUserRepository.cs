@@ -115,19 +115,19 @@ namespace DopplerIntegrationsData
                         RefreshToken = NullTreatment.GetString(reader.GetSqlValue(3)),
                         IdAccount = NullTreatment.GetLong(reader.GetSqlValue(4)),
                         AccountName = NullTreatment.GetString(reader.GetSqlValue(5)),
-                        UTCLastUpdate = NullTreatment.GetDateTime(reader.GetSqlValue(6)),
+                        UTCLastUpdate = NullTreatment.GetNullableDateTime(reader.GetSqlValue(6)),
                         SendNotificationEmail = NullTreatment.GetBoolean(reader.GetSqlValue(7)),
-                        UTCLastCompletedSync = NullTreatment.GetDateTime(reader.GetSqlValue(8)),
+                        UTCLastCompletedSync = NullTreatment.GetNullableDateTime(reader.GetSqlValue(8)),
                         SourceType = NullTreatment.GetInt(reader.GetSqlValue(9)),
                         ConnectionErrors = NullTreatment.GetInt(reader.GetSqlValue(10)),
-                        UTCLastValidation = NullTreatment.GetDateTime(reader.GetSqlValue(11)),
-                        UTCCreationDate = NullTreatment.GetDateTime(reader.GetSqlValue(12)),
+                        UTCLastValidation = NullTreatment.GetNullableDateTime(reader.GetSqlValue(11)),
+                        UTCCreationDate = NullTreatment.GetNullableDateTime(reader.GetSqlValue(12)),
                         RFMActive = NullTreatment.GetBoolean(reader.GetSqlValue(13)),
                         RFMPeriod = NullTreatment.GetInt(reader.GetSqlValue(14)),
-                        UTCLastRFMCalc = NullTreatment.GetDateTime(reader.GetSqlValue(15)),
-                        BQUpdateDate = NullTreatment.GetDateTime(reader.GetSqlValue(16)),
-                        UTCTokenExpiration = NullTreatment.GetDateTime(reader.GetSqlValue(17)),
-                        UTCLastAssistedShoppingSync = NullTreatment.GetDateTime(reader.GetSqlValue(18))
+                        UTCLastRFMCalc = NullTreatment.GetNullableDateTime(reader.GetSqlValue(15)),
+                        BQUpdateDate = NullTreatment.GetNullableDateTime(reader.GetSqlValue(16)),
+                        UTCTokenExpiration = NullTreatment.GetNullableDateTime(reader.GetSqlValue(17)),
+                        UTCLastAssistedShoppingSync = NullTreatment.GetNullableDateTime(reader.GetSqlValue(18))
                     };
                 }
 

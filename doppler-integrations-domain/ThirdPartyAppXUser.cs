@@ -18,15 +18,15 @@ namespace DopplerIntegrationsDomain
 
         public bool SendNotificationEmail { get; set; }
 
-        public DateTime UTCLastCompletedSync { get; set; }
+        public DateTime? UTCLastCompletedSync { get; set; }
 
         public int SourceType { get; set; }
 
         public int ConnectionErrors { get; set; }
 
-        public DateTime UTCLastValidation { get; set; }
+        public DateTime? UTCLastValidation { get; set; }
 
-        public DateTime UTCCreationDate { get; set; }
+        public DateTime? UTCCreationDate { get; set; }
 
         public bool RFMActive { get; set; }
 
@@ -34,11 +34,11 @@ namespace DopplerIntegrationsDomain
 
         public DateTime? UTCLastRFMCalc { get; set; }
 
-        public DateTime BQUpdateDate { get; set; }
+        public DateTime? BQUpdateDate { get; set; }
 
-        public DateTime UTCTokenExpiration { get; set; }
+        public DateTime? UTCTokenExpiration { get; set; }
 
-        public DateTime UTCLastAssistedShoppingSync { get; set; }
+        public DateTime? UTCLastAssistedShoppingSync { get; set; }
 
         public ThirdPartyApp ThirdPartyApp { get; set; }
     }
