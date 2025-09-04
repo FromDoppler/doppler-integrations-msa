@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using DopplerIntegrationsCore;
@@ -7,7 +5,6 @@ using DopplerIntegrationsData;
 using DopplerIntegrationsDomain;
 using DopplerIntegrationsMsa.DopplerSecurity;
 using DopplerIntegrationsMsa.Logging;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.OpenApi.Models;
 using Serilog;
@@ -57,6 +54,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDopplerSecurity();
 
 builder.Services.AddSingleton<IThirdPartyAppService, ThirdPartyAppService>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<ITimeZoneRepository, TimeZoneRepository>();
 builder.Services.AddSingleton<IThirdPartyAppXUserRepository, ThirdPartyAppXUserRepository>();
 builder.Services.AddSingleton<IAssistedShoppingService, AssistedShoppingService>();
 builder.Services.AddSingleton<IAssistedShoppingRepository, AssistedShoppingRepository>();
@@ -127,6 +127,34 @@ app.MapGet("/user/assisted-shopping/{idThirdPartyApp}/{dateFrom}/{dateTo}", asyn
 .WithOpenApi()
 .RequireAuthorization(Policies.Default);
 
+app.MapGet("/integration/{idThirdPartyApp:int}/status",
+    async Task<Results<Ok<RfmModel>, NotFound, NoContent>> (
+        int idThirdPartyApp,
+        ClaimsPrincipal user,
+        IUserService userService,
+        IThirdPartyAppService thirdPartyAppService) =>
+    {
+        var idUser = SecurityUtils.GetAuthenticatedUserId(user);
+        var userDb = userService.GetUserById(idUser);
+
+        var thirdPartyAppXUser = await thirdPartyAppService
+            .GetThirdPartyAppXUser(userDb, idThirdPartyApp);
+
+        if (thirdPartyAppXUser is null)
+        {
+            return TypedResults.NotFound();
+        }
+
+        var rfmModel = await thirdPartyAppService
+            .GetRfmModel(userDb, thirdPartyAppXUser);
+
+        return rfmModel is null
+            ? TypedResults.NoContent()
+            : TypedResults.Ok(rfmModel);
+    })
+    .WithName("GetIntegrationStatus")
+    .WithOpenApi()
+    .RequireAuthorization(Policies.Default);
 
 app.Run();
 

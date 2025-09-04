@@ -29,5 +29,13 @@ namespace DopplerIntegrationsDomain
         public bool PromotionCodeEnabled { get; set; }
 
         public bool AssistedShoppingEnabled { get; set; }
+
+        public bool PopularProductsEnabled { get; set; }
+
+        public bool ProductHistoryEnabled { get; set; }
+
+        public bool DynamicProductEnabled { get; set; }
+
+        public bool ExitPopUpEnabled { get; set; }
     }
 }
